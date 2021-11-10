@@ -18,6 +18,12 @@ public protocol ModulesProviderProtocol: ModulesProviderObjCProtocol {
    Returns an array of classes that hooks into `ExpoAppDelegate` to receive app delegate events.
    */
   func getAppDelegateSubscribers() -> [ExpoAppDelegateSubscriber.Type]
+
+  /**
+   Returns an array of (packageName, klass) tuple for `ReactDelegate` to hook React instance creation.
+   */
+  typealias ReactDelegateHandlerTupleType = (packageName: String, klass: EXReactDelegateHandler.Type)
+  func getReactDelegateHandlers() -> [ReactDelegateHandlerTupleType]
 }
 
 /**
@@ -31,6 +37,10 @@ open class ModulesProvider: NSObject, ModulesProviderProtocol, ModulesProviderOb
   }
 
   open func getAppDelegateSubscribers() -> [ExpoAppDelegateSubscriber.Type] {
+    return []
+  }
+
+  open func getReactDelegateHandlers() -> [ReactDelegateHandlerTupleType] {
     return []
   }
 }
