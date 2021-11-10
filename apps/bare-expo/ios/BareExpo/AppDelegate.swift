@@ -42,19 +42,17 @@ class AppDelegate: ExpoAppDelegate {
   }
 
   @discardableResult
-  func initializeReactNativeBridge(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> RCTBridge? {
-    if let bridge = RCTBridge(delegate: self, launchOptions: launchOptions) {
-      let rootView = RCTRootView(bridge: bridge, moduleName: "main", initialProperties: nil)
-      let rootViewController = EXScreenOrientationViewController()!
-      rootView.backgroundColor = UIColor.white
-      rootViewController.view = rootView
+  func initializeReactNativeBridge(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> RCTBridge {
+    let bridge = reactDelegate.createBridge(with: self, launchOptions: launchOptions)
+    let rootView = reactDelegate.createRootView(with: bridge, moduleName: "main", initialProperties: nil)
+    let rootViewController = reactDelegate.createRootViewController()
+    rootView.backgroundColor = UIColor.white
+    rootViewController.view = rootView
 
-      window?.rootViewController = rootViewController
-      window?.makeKeyAndVisible()
-      self.bridge = bridge
-      return bridge;
-    }
-    return nil;
+    window?.rootViewController = rootViewController
+    window?.makeKeyAndVisible()
+    self.bridge = bridge
+    return bridge;
   }
   
   #if RCT_DEV

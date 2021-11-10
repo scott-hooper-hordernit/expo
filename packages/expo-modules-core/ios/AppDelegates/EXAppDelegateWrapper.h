@@ -2,6 +2,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import <ExpoModulesCore/EXReactDelegate.h>
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -10,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
  If your `AppDelegate` is in Swift, it should inherit from `ExpoAppDelegate` class instead.
  */
 @interface EXAppDelegateWrapper : UIResponder <UIApplicationDelegate>
+
+@property (nonatomic, readonly, weak) EXReactDelegate *reactDelegate;
 
 @end
 
