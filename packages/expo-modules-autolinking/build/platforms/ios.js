@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.formatArrayOfReactDelegateHandler = exports.generatePackageListAsync = exports.resolveModuleAsync = void 0;
+exports.normalizePodModule = exports.formatArrayOfReactDelegateHandler = exports.generatePackageListAsync = exports.resolveModuleAsync = void 0;
 const fast_glob_1 = __importDefault(require("fast-glob"));
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const path_1 = __importDefault(require("path"));
@@ -12,7 +12,7 @@ const path_1 = __importDefault(require("path"));
  */
 async function resolveModuleAsync(packageName, revision, options) {
     var _a, _b, _c;
-    const [podspecFile] = await (0, fast_glob_1.default)('*/*.podspec', {
+    const [podspecFile] = await (0, fast_glob_1.default)('{*/,}*.podspec', {
         cwd: revision.path,
         ignore: ['**/node_modules/**'],
     });
@@ -63,7 +63,7 @@ async function generatePackageListFileContentAsync(modules, className) {
  */
 
 import ExpoModulesCore
-${pods.map((podName) => `import ${podName}\n`).join('')}
+${pods.map((podName) => `import ${normalizePodModule(podName)}\n`).join('')}
 @objc(${className})
 public class ${className}: ModulesProvider {
   public override func getModuleClasses() -> [AnyModule.Type] {
@@ -103,4 +103,11 @@ function formatArrayOfReactDelegateHandler(modules) {
 ${indent.repeat(2)}]`;
 }
 exports.formatArrayOfReactDelegateHandler = formatArrayOfReactDelegateHandler;
+function normalizePodModule(podName) {
+    // TODO: Find a way to determine the normalized import?
+    let result = podName.replace(/-([a-z])/g, (match) => match[1].toUpperCase());
+    result = result.replace(/^expo/, 'EX');
+    return result;
+}
+exports.normalizePodModule = normalizePodModule;
 //# sourceMappingURL=ios.js.map

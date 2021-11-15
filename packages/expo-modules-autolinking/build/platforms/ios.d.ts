@@ -11,3 +11,4 @@ export declare function generatePackageListAsync(modules: ModuleDescriptor[], ta
  * Formats an array of module to Swift's array containing ReactDelegateHandlers
  */
 export declare function formatArrayOfReactDelegateHandler(modules: ModuleDescriptor[]): string;
+export declare function normalizePodModule(podName: string): string;

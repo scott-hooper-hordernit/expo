@@ -12,7 +12,7 @@ export async function resolveModuleAsync(
   revision: PackageRevision,
   options: SearchOptions
 ): Promise<ModuleDescriptor | null> {
-  const [podspecFile] = await glob('*/*.podspec', {
+  const [podspecFile] = await glob('{*/,}*.podspec', {
     cwd: revision.path,
     ignore: ['**/node_modules/**'],
   });
@@ -82,7 +82,7 @@ async function generatePackageListFileContentAsync(
  */
 
 import ExpoModulesCore
-${pods.map((podName) => `import ${podName}\n`).join('')}
+${pods.map((podName) => `import ${normalizePodModule(podName)}\n`).join('')}
 @objc(${className})
 public class ${className}: ModulesProvider {
   public override func getModuleClasses() -> [AnyModule.Type] {
@@ -122,4 +122,11 @@ export function formatArrayOfReactDelegateHandler(modules: ModuleDescriptor[]): 
   const indent = '  ';
   return `[${values.map((value) => `\n${indent.repeat(3)}${value}`).join(',')}
 ${indent.repeat(2)}]`;
+}
+
+export function normalizePodModule(podName: string): string {
+  // TODO: Find a way to determine the normalized import?
+  let result = podName.replace(/-([a-z])/g, (match) => match[1].toUpperCase());
+  result = result.replace(/^expo/, 'EX');
+  return result;
 }
