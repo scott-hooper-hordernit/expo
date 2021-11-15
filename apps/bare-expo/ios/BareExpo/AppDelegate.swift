@@ -18,7 +18,7 @@ import FlipperKit
 #endif
 
 @UIApplicationMain
-class AppDelegate: ExpoAppDelegate {
+class AppDelegate: EXAppDelegateWrapper {
   var bridge: RCTBridge?
   var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 
@@ -42,7 +42,10 @@ class AppDelegate: ExpoAppDelegate {
   }
 
   @discardableResult
-  func initializeReactNativeBridge(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> RCTBridge {
+  func initializeReactNativeBridge(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> RCTBridge? {
+    guard let reactDelegate = self.reactDelegate else {
+      return nil
+    }
     let bridge = reactDelegate.createBridge(with: self, launchOptions: launchOptions)
     let rootView = reactDelegate.createRootView(with: bridge, moduleName: "main", initialProperties: nil)
     let rootViewController = reactDelegate.createRootViewController()
