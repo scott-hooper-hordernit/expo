@@ -3,7 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.normalizePodModule = exports.formatArrayOfReactDelegateHandler = exports.generatePackageListAsync = exports.resolveModuleAsync = void 0;
+exports.formatArrayOfReactDelegateHandler = exports.generatePackageListAsync = exports.resolveModuleAsync = void 0;
+const spawn_async_1 = __importDefault(require("@expo/spawn-async"));
 const fast_glob_1 = __importDefault(require("fast-glob"));
 const fs_extra_1 = __importDefault(require("fs-extra"));
 const path_1 = __importDefault(require("path"));
@@ -47,7 +48,7 @@ async function generatePackageListFileContentAsync(modules, className) {
     const modulesToImport = modules.filter((module) => module.modulesClassNames.length ||
         module.appDelegateSubscribers.length ||
         module.reactDelegateHandlers.length);
-    const pods = modulesToImport.map((module) => module.podName);
+    const importSwiftModules = await Promise.all(modulesToImport.map((module) => normalizePodModuleAsync(module)));
     const modulesClassNames = []
         .concat(...modulesToImport.map((module) => module.modulesClassNames))
         .filter(Boolean);
@@ -63,7 +64,7 @@ async function generatePackageListFileContentAsync(modules, className) {
  */
 
 import ExpoModulesCore
-${pods.map((podName) => `import ${normalizePodModule(podName)}\n`).join('')}
+${importSwiftModules.map((module) => `import ${module}\n`).join('')}
 @objc(${className})
 public class ${className}: ModulesProvider {
   public override func getModuleClasses() -> [AnyModule.Type] {
@@ -103,11 +104,17 @@ function formatArrayOfReactDelegateHandler(modules) {
 ${indent.repeat(2)}]`;
 }
 exports.formatArrayOfReactDelegateHandler = formatArrayOfReactDelegateHandler;
-function normalizePodModule(podName) {
-    // TODO: Find a way to determine the normalized import?
-    let result = podName.replace(/-([a-z])/g, (match) => match[1].toUpperCase());
-    result = result.replace(/^expo/, 'EX');
+async function normalizePodModuleAsync(module) {
+    let result = module.podName;
+    const podspecFile = path_1.default.join(module.podspecDir, `${module.podName}.podspec`);
+    console.log('podspecFile', podspecFile);
+    if (await fs_extra_1.default.pathExists(podspecFile)) {
+        const { stdout } = await (0, spawn_async_1.default)('pod', ['ipc', 'spec', podspecFile]);
+        const podspecJson = JSON.parse(stdout);
+        if (podspecJson.header_dir) {
+            result = podspecJson.header_dir;
+        }
+    }
     return result;
 }
-exports.normalizePodModule = normalizePodModule;
 //# sourceMappingURL=ios.js.map

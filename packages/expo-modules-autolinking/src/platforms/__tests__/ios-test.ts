@@ -1,4 +1,4 @@
-import { formatArrayOfReactDelegateHandler, normalizePodModule } from '../ios';
+import { formatArrayOfReactDelegateHandler } from '../ios';
 
 describe(formatArrayOfReactDelegateHandler, () => {
   it('should output empty array when no one specify `reactDelegateHandlers`', () => {
@@ -46,11 +46,5 @@ describe(formatArrayOfReactDelegateHandler, () => {
       (packageName: "expo-constants", klass: ConstantsReactDelegateHandler2.self),
       (packageName: "expo-device", klass: DeviceReactDelegateHandler.self)
     ]`);
-  });
-});
-
-describe(normalizePodModule, () => {
-  it('should transform expo-dev-launcher to EXDevLauncher', () => {
-    expect(normalizePodModule('expo-dev-launcher')).toBe('EXDevLauncher');
   });
 });

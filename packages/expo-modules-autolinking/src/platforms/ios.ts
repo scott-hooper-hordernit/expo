@@ -1,3 +1,4 @@
+import spawnAsync from '@expo/spawn-async';
 import glob from 'fast-glob';
 import fs from 'fs-extra';
 import path from 'path';
@@ -60,7 +61,9 @@ async function generatePackageListFileContentAsync(
       module.appDelegateSubscribers.length ||
       module.reactDelegateHandlers.length
   );
-  const pods = modulesToImport.map((module) => module.podName);
+  const importSwiftModules = await Promise.all(
+    modulesToImport.map((module) => normalizePodModuleAsync(module))
+  );
 
   const modulesClassNames = []
     .concat(...modulesToImport.map((module) => module.modulesClassNames))
@@ -82,7 +85,7 @@ async function generatePackageListFileContentAsync(
  */
 
 import ExpoModulesCore
-${pods.map((podName) => `import ${normalizePodModule(podName)}\n`).join('')}
+${importSwiftModules.map((module) => `import ${module}\n`).join('')}
 @objc(${className})
 public class ${className}: ModulesProvider {
   public override func getModuleClasses() -> [AnyModule.Type] {
@@ -124,9 +127,16 @@ export function formatArrayOfReactDelegateHandler(modules: ModuleDescriptor[]): 
 ${indent.repeat(2)}]`;
 }
 
-export function normalizePodModule(podName: string): string {
-  // TODO: Find a way to determine the normalized import?
-  let result = podName.replace(/-([a-z])/g, (match) => match[1].toUpperCase());
-  result = result.replace(/^expo/, 'EX');
+async function normalizePodModuleAsync(module: ModuleDescriptor): Promise<string> {
+  let result = module.podName;
+  const podspecFile = path.join(module.podspecDir, `${module.podName}.podspec`);
+  console.log('podspecFile', podspecFile);
+  if (await fs.pathExists(podspecFile)) {
+    const { stdout } = await spawnAsync('pod', ['ipc', 'spec', podspecFile]);
+    const podspecJson = JSON.parse(stdout);
+    if (podspecJson.header_dir) {
+      result = podspecJson.header_dir;
+    }
+  }
   return result;
 }
