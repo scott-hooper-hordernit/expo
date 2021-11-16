@@ -1,10 +1,10 @@
 // Copyright 2018-present 650 Industries. All rights reserved.
 
 #import <UIKit/UIKit.h>
-
-#import <ExpoModulesCore/EXReactDelegateHandler.h>
 #import <React/RCTBridge.h>
 #import <React/RCTRootView.h>
+
+@class EXReactDelegateHandler;
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -18,7 +18,7 @@ import FlipperKit
 #endif
 
 @UIApplicationMain
-class AppDelegate: EXAppDelegateWrapper {
+class AppDelegate: ExpoAppDelegate, RCTBridgeDelegate, EXDevLauncherControllerDelegate {
   var bridge: RCTBridge?
   var launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 
@@ -42,10 +42,7 @@ class AppDelegate: EXAppDelegateWrapper {
   }
 
   @discardableResult
-  func initializeReactNativeBridge(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> RCTBridge? {
-    guard let reactDelegate = self.reactDelegate else {
-      return nil
-    }
+  func initializeReactNativeBridge(_ launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> RCTBridge {
     let bridge = reactDelegate.createBridge(with: self, launchOptions: launchOptions)
     let rootView = reactDelegate.createRootView(with: bridge, moduleName: "main", initialProperties: nil)
     let rootViewController = reactDelegate.createRootViewController()
@@ -55,7 +52,7 @@ class AppDelegate: EXAppDelegateWrapper {
     window?.rootViewController = rootViewController
     window?.makeKeyAndVisible()
     self.bridge = bridge
-    return bridge;
+    return bridge
   }
   
   #if RCT_DEV
@@ -83,11 +80,9 @@ class AppDelegate: EXAppDelegateWrapper {
     client?.start()
   #endif
   }
-}
 
-// MARK: - RCTBridgeDelegate
+  // MARK: - RCTBridgeDelegate
 
-extension AppDelegate: RCTBridgeDelegate {
   func sourceURL(for bridge: RCTBridge!) -> URL! {
     // DEBUG must be setup in Swift projects: https://stackoverflow.com/a/24112024/4047926
     #if DEBUG
@@ -100,7 +95,7 @@ extension AppDelegate: RCTBridgeDelegate {
     return Bundle.main.url(forResource: "main", withExtension: "jsbundle")
     #endif
   }
-  
+
   func extraModules(for bridge: RCTBridge!) -> [RCTBridgeModule] {
     var extraModules = [RCTBridgeModule]()
     // You can inject any extra modules that you would like here, more information at:
@@ -110,7 +105,7 @@ extension AppDelegate: RCTBridgeDelegate {
     // https://github.com/expo/react-native/commit/7f2912e8005ea6e81c45935241081153b822b988
     // Let's bring it back in Bare Expo.
     extraModules.append(RCTDevMenu() as! RCTBridgeModule)
-    
+
     // Add AsyncStorage back to the project
     // https://github.com/expo/react-native/commit/bd1396034319e6e59f960fac7aeca1f483c2052d
     let documentDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as NSString
@@ -118,11 +113,9 @@ extension AppDelegate: RCTBridgeDelegate {
     extraModules.append(RCTAsyncLocalStorage(storageDirectory: storageDirectory))
     return extraModules
   }
-}
 
-// MARK: - EXDevelopmentClientControllerDelegate
+  // MARK: - EXDevelopmentClientControllerDelegate
 
-extension AppDelegate:  EXDevLauncherControllerDelegate {
   func devLauncherController(_ developmentClientController: EXDevLauncherController, didStartWithSuccess success: Bool) {
     developmentClientController.appBridge = initializeReactNativeBridge(developmentClientController.getLaunchOptions())
   }

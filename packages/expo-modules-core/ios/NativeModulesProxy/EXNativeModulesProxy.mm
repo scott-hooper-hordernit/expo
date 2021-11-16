@@ -207,7 +207,13 @@ RCT_EXPORT_METHOD(callMethod:(NSString *)moduleName methodNameOrKey:(id)methodNa
 {
   // Dynamically gets the modules provider class.
   // NOTE: This needs to be versioned in Expo Go.
-  Class generatedExpoModulesProvider = NSClassFromString(@"ExpoModulesProvider");
+  NSString *className = NSBundle.mainBundle.infoDictionary[@"CFBundleName"];
+  if (className != nil) {
+    className = [className stringByAppendingString:@".ExpoModulesProvider"];
+  } else {
+    className = @"ExpoModulesProvider";
+  }
+  Class generatedExpoModulesProvider = NSClassFromString(className);
   // Checks if `ExpoModulesProvider` was generated
   if (generatedExpoModulesProvider) {
     return [generatedExpoModulesProvider new];
