@@ -28,13 +28,13 @@ Pod::Spec.new do |s|
     ]
   }
 
-  s.xcconfig = {
+  s.pod_target_xcconfig = {
+    'DEFINES_MODULE' => 'YES',
+    'BUILD_LIBRARY_FOR_DISTRIBUTION' => 'YES',
+    'SWIFT_COMPILATION_MODE' => 'wholemodule',
     'GCC_PREPROCESSOR_DEFINITIONS' => "EX_DEV_LAUNCHER_ENABLED=1 EX_DEV_LAUNCHER_VERSION=#{s.version}",
     'OTHER_SWIFT_FLAGS' => '-DEX_DEV_LAUNCHER_ENABLED=1'
   }
-
-  # Swift/Objective-C compatibility
-  s.pod_target_xcconfig = { "DEFINES_MODULE" => "YES" }
   
   s.dependency "React-Core"
   s.dependency "expo-dev-menu-interface"

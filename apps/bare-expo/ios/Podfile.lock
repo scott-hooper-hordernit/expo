@@ -1306,7 +1306,7 @@ SPEC CHECKSUMS:
   EXPermissions: 08ccf78a0eb404c28df6d226fcc8fcf2e558b421
   Expo: 23ed30f225511b93fa6a0c14d9a3208d6b749060
   expo-dev-client: 97a9589d2ea0325a8dd4dff284fe3a4b9166bbce
-  expo-dev-launcher: fdf02a7893867b07f2c448f8b427419bb1072d4b
+  expo-dev-launcher: 277a21b4725e30da6712f6dbc6dc3d1e235836dc
   expo-dev-menu: ec566cc2bc8e783b9874afb81ea92a90d6069f01
   expo-dev-menu-interface: 273c68c2c30ecbc70af2903dfb3821f567ef9d78
   ExpoCellular: 90940614d45df5b31f281d70a63d92a06fe44af4

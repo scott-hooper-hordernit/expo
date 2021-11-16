@@ -2,6 +2,7 @@
   "name": "expo-dev-launcher",
   "platforms": ["ios"],
   "ios": {
-    "reactDelegateHandlers": ["DevLauncherReactDelegateHandler"]
+    "appDelegateSubscribers": ["ExpoDevLauncherAppDelegateSubscriber"],
+    "reactDelegateHandlers": ["ExpoDevLauncherReactDelegateHandler"]
   }
 }
