@@ -107,7 +107,6 @@ exports.formatArrayOfReactDelegateHandler = formatArrayOfReactDelegateHandler;
 async function normalizePodModuleAsync(module) {
     let result = module.podName;
     const podspecFile = path_1.default.join(module.podspecDir, `${module.podName}.podspec`);
-    console.log('podspecFile', podspecFile);
     if (await fs_extra_1.default.pathExists(podspecFile)) {
         const { stdout } = await (0, spawn_async_1.default)('pod', ['ipc', 'spec', podspecFile]);
         const podspecJson = JSON.parse(stdout);

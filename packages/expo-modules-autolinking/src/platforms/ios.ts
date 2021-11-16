@@ -130,7 +130,6 @@ ${indent.repeat(2)}]`;
 async function normalizePodModuleAsync(module: ModuleDescriptor): Promise<string> {
   let result = module.podName;
   const podspecFile = path.join(module.podspecDir, `${module.podName}.podspec`);
-  console.log('podspecFile', podspecFile);
   if (await fs.pathExists(podspecFile)) {
     const { stdout } = await spawnAsync('pod', ['ipc', 'spec', podspecFile]);
     const podspecJson = JSON.parse(stdout);
