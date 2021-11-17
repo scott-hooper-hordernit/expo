@@ -32,7 +32,7 @@
   }
 
   for (EXReactDelegateHandler *handler in self.reactDelegateHandlers) {
-    [handler bridgeDidCreate];
+    [handler bridgeDidCreate:bridge];
   }
 
   return bridge;

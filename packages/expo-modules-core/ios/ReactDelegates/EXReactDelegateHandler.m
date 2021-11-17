@@ -28,7 +28,7 @@
 {
 }
 
-- (void)bridgeDidCreate
+- (void)bridgeDidCreate:(RCTBridge *)bridge
 {
 }
 
