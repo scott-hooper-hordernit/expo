@@ -18,7 +18,7 @@ describe(formatArrayOfReactDelegateHandler, () => {
     ]`);
   });
 
-  it('should output array of `(packageName, klass)` tuple', () => {
+  it('should output array of `(packageName, handler)` tuple', () => {
     const modules = [
       {
         packageName: 'expo-constants',
@@ -42,9 +42,9 @@ describe(formatArrayOfReactDelegateHandler, () => {
       },
     ];
     expect(formatArrayOfReactDelegateHandler(modules)).toBe(`[
-      (packageName: "expo-constants", klass: ConstantsReactDelegateHandler.self),
-      (packageName: "expo-constants", klass: ConstantsReactDelegateHandler2.self),
-      (packageName: "expo-device", klass: DeviceReactDelegateHandler.self)
+      (packageName: "expo-constants", handler: ConstantsReactDelegateHandler.self),
+      (packageName: "expo-constants", handler: ConstantsReactDelegateHandler2.self),
+      (packageName: "expo-device", handler: DeviceReactDelegateHandler.self)
     ]`);
   });
 });

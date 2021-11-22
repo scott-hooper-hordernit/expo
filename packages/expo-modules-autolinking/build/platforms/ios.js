@@ -95,7 +95,7 @@ function formatArrayOfReactDelegateHandler(modules) {
     const values = [];
     for (const module of modules) {
         for (const handler of module.reactDelegateHandlers) {
-            values.push(`(packageName: "${module.packageName}", klass: ${handler}.self)`);
+            values.push(`(packageName: "${module.packageName}", handler: ${handler}.self)`);
         }
     }
     const indent = '  ';

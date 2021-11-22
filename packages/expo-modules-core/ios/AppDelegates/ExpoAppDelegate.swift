@@ -276,7 +276,7 @@ open class ExpoAppDelegate: UIResponder, UIApplicationDelegate {
         return ModulePriorities.get(tuple1.packageName) > ModulePriorities.get(tuple2.packageName)
       }
       .forEach { handlerTuple in
-        reactDelegateHandlers.append(handlerTuple.klass.init())
+        reactDelegateHandlers.append(handlerTuple.handler.init())
       }
   }
 }

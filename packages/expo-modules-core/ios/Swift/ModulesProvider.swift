@@ -19,10 +19,10 @@ public protocol ModulesProviderProtocol: ModulesProviderObjCProtocol {
    */
   func getAppDelegateSubscribers() -> [ExpoAppDelegateSubscriber.Type]
 
+  typealias ReactDelegateHandlerTupleType = (packageName: String, handler: EXReactDelegateHandler.Type)
   /**
-   Returns an array of (packageName, klass) tuple for `ReactDelegate` to hook React instance creation.
+   Returns an array of `ReactDelegateHandlerTupleType` for `ReactDelegate` to hook React instance creation.
    */
-  typealias ReactDelegateHandlerTupleType = (packageName: String, klass: EXReactDelegateHandler.Type)
   func getReactDelegateHandlers() -> [ReactDelegateHandlerTupleType]
 }
 
