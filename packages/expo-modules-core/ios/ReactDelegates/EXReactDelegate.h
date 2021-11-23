@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface EXReactDelegate : NSObject
 
-- (instancetype)initWithReactDelegateHandlers:(NSArray<EXReactDelegateHandler *> *)reactDelegateHandlers;
+- (instancetype)initWithHandlers:(NSArray<EXReactDelegateHandler *> *)handlers;
 
 - (RCTBridge *)createBridgeWithDelegate:(id<RCTBridgeDelegate>)delegate
                           launchOptions:(nullable NSDictionary *)launchOptions;
@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIViewController *)createRootViewController;
 
-@property (nonatomic, readonly, strong) NSArray<EXReactDelegateHandler *> *reactDelegateHandlers;
+@property (nonatomic, readonly, strong) NSArray<EXReactDelegateHandler *> *handlers;
 
 @end
 

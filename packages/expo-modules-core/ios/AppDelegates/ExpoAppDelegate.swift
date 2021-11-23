@@ -3,7 +3,7 @@ import Dispatch
 import Foundation
 
 var subscribers = [ExpoAppDelegateSubscriberProtocol]()
-var reactDelegateHandlers = [EXReactDelegateHandler]()
+var reactDelegateHandlers = [ExpoReactDelegateHandler]()
 
 /**
  Allows classes extending `ExpoAppDelegateSubscriber` to hook into project's app delegate
@@ -16,7 +16,7 @@ open class ExpoAppDelegate: UIResponder, UIApplicationDelegate {
   open var window: UIWindow?
 
   @objc
-  open var reactDelegate = EXReactDelegate(reactDelegateHandlers: reactDelegateHandlers)
+  open var reactDelegate = EXReactDelegate(handlers: reactDelegateHandlers.map { EXReactDelegateHandler(handler: $0) })
 
   // MARK: - Initializing the App
 
