@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface EXAppDelegateWrapper : UIResponder <UIApplicationDelegate>
 
-@property (nonatomic, readonly, weak) EXReactDelegate *reactDelegate;
+- (nonnull EXReactDelegate *)reactDelegate;
 
 @end
 

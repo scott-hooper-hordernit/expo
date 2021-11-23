@@ -20,9 +20,13 @@
 {
   if (self = [super init]) {
     _expoAppDelegate = [[EXExpoAppDelegate alloc] init];
-    _reactDelegate = _expoAppDelegate.reactDelegate;
   }
   return self;
+}
+
+- (nonnull EXReactDelegate *)reactDelegate
+{
+  return _expoAppDelegate.reactDelegate;
 }
 
 // This needs to be implemented, otherwise forwarding won't be called.
