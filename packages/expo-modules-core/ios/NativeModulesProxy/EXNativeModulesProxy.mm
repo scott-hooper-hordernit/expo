@@ -203,23 +203,43 @@ RCT_EXPORT_METHOD(callMethod:(NSString *)moduleName methodNameOrKey:(id)methodNa
 
 #pragma mark - Statics
 
-+ (id<ModulesProviderObjCProtocol>)getExpoModulesProvider
++ (Class)getExpoModulesProviderClass
 {
-  // Dynamically gets the modules provider class.
-  // NOTE: This needs to be versioned in Expo Go.
+
+
+
   NSString *className = NSBundle.mainBundle.infoDictionary[@"CFBundleName"];
   if (className != nil) {
     className = [className stringByAppendingString:@".ExpoModulesProvider"];
   } else {
     className = @"ExpoModulesProvider";
   }
-  Class generatedExpoModulesProvider = NSClassFromString(className);
-  // Checks if `ExpoModulesProvider` was generated
-  if (generatedExpoModulesProvider) {
-    return [generatedExpoModulesProvider new];
-  } else {
-    return [ModulesProvider new];
+}
+
++ (id<ModulesProviderObjCProtocol>)getExpoModulesProvider
+{
+  // Dynamically gets the modules provider class.
+  // NOTE: This needs to be versioned in Expo Go.
+  Class generatedExpoModulesProvider;
+
+  // [0] When ExpoModulesCore is built as separated framework/module,
+  // we should explicitly load main bundle's `ExpoModulesProvider` class.
+  NSString *bundleName = NSBundle.mainBundle.infoDictionary[@"CFBundleName"];
+  if (bundleName != nil) {
+    generatedExpoModulesProvider = NSClassFromString([NSString stringWithFormat:@"%@.ExpoModulesProvider", bundleName]);
+    if (generatedExpoModulesProvider != nil) {
+      return [generatedExpoModulesProvider new];
+    }
   }
+
+  // [1] Fallback to load `ExpoModulesProvider` class from the current module.
+  generatedExpoModulesProvider = NSClassFromString(@"ExpoModulesProvider");
+  if (generatedExpoModulesProvider != nil) {
+    return [generatedExpoModulesProvider new];
+  }
+
+  // [2] Fallback to load `ModulesProvider` if `ExpoModulesProvider` was not generated
+  return [ModulesProvider new];
 }
 
 #pragma mark - Privates
