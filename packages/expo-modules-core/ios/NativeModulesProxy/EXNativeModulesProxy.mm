@@ -203,19 +203,6 @@ RCT_EXPORT_METHOD(callMethod:(NSString *)moduleName methodNameOrKey:(id)methodNa
 
 #pragma mark - Statics
 
-+ (Class)getExpoModulesProviderClass
-{
-
-
-
-  NSString *className = NSBundle.mainBundle.infoDictionary[@"CFBundleName"];
-  if (className != nil) {
-    className = [className stringByAppendingString:@".ExpoModulesProvider"];
-  } else {
-    className = @"ExpoModulesProvider";
-  }
-}
-
 + (id<ModulesProviderObjCProtocol>)getExpoModulesProvider
 {
   // Dynamically gets the modules provider class.
